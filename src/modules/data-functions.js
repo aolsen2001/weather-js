@@ -1,3 +1,5 @@
+import { appendToTable } from './domcontroller.js';
+
 export async function getWeatherData(units, location) {
   try {
     const response = await fetch(
@@ -19,12 +21,11 @@ export function processWeatherData(weatherData) {
     const filteredWeatherData = [];
     filteredWeatherData.push(weatherData.days);
     filteredWeatherData[0].forEach((d) => {
-      if (d === filteredWeatherData[0][0]) console.log('today');
-      console.log(`${d.datetime}, ${d.temp}, ${d.conditions}`);
+      if (d === filteredWeatherData[0][0]) {
+        console.log('today');
+      }
+      console.log(`${d.datetime}, ${Math.round(d.tempmin)}, ${Math.round(d.tempmax)}, ${d.conditions}`);
     });
-    // const filteredWeatherData = weatherData.days;
-    // filteredWeatherData.forEach((d) => {
-    //     console.log(`${d.datetime}, ${d.temp}, ${d.conditions}`);
-    // });
+    return filteredWeatherData;
 }
 

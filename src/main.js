@@ -1,26 +1,18 @@
 import "./styles.css";
 import { getWeatherData, processWeatherData } from "./modules/data-functions.js";
 
-// async function getWeatherData(location) {
-//     try {
-//         const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=DJ3HUDW7YL3L237YRPFEAKJSK`);
-//         const weatherData = await response.json();
-//         weatherData.days.forEach((d) => {
-//             console.log(`${d.datetime}, ${d.temp}`);
-//         });
-//         return weatherData;
-//     } catch (e) {
-
-//     }
-// }
 const form = document.getElementById('info-form');
 const locationInput = document.getElementById('location');
 const content = document.querySelector('.main-content-container');
-console.log(content);
+
+const locationsOnLoad = ['Milwaukee', 'Chicago', 'Dallas', 'Las Vegas', 'San Francisco', 'New York'];
 
 let unitGroup = 'us';
-let location = 'Milwaukee';
-let weatherData;
+let location = locationsOnLoad[Math.floor(Math.random() * 6)];
+console.log(location);
+
+let weatherData = await getWeatherData(unitGroup, location);
+let processedWeatherData = processWeatherData(weatherData);
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -31,6 +23,7 @@ form.addEventListener('submit', async (e) => {
         div.innerHTML = 'Location not found';
         content.append(div);
     } else {
-        processWeatherData(weatherData);
+        processedWeatherData = processWeatherData(weatherData);
+        console.log(processedWeatherData);
     }
 });
