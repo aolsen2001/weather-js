@@ -1,5 +1,5 @@
-import './styles.css';
-import { getWeatherData } from './modules/data-functions.js';
+import "./styles.css";
+import { getWeatherData, processWeatherData } from "./modules/data-functions.js";
 
 // async function getWeatherData(location) {
 //     try {
@@ -13,7 +13,15 @@ import { getWeatherData } from './modules/data-functions.js';
 
 //     }
 // }
+const locationInput = document.getElementById('location');
 
+let unitGroup = 'us';
+let location = 'Milwaukee';
+let weatherData;
 
-
-getWeatherData('Milwaukee');
+const submit = document.getElementById('submit');
+submit.addEventListener('click', async () => {
+    location = locationInput.value;
+    weatherData = await getWeatherData(unitGroup, location);
+    processWeatherData(weatherData);
+});
