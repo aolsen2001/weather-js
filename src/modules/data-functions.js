@@ -1,5 +1,3 @@
-import { appendToTable } from './domcontroller.js';
-
 export async function getWeatherData(units, location) {
   try {
     const response = await fetch(

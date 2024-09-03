@@ -9,7 +9,6 @@ const locationsOnLoad = ['Milwaukee', 'Chicago', 'Dallas', 'Las Vegas', 'San Fra
 
 let unitGroup = 'us';
 let location = locationsOnLoad[Math.floor(Math.random() * 6)];
-console.log(location);
 
 let weatherData = await getWeatherData(unitGroup, location);
 let processedWeatherData = processWeatherData(weatherData);
