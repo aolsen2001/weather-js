@@ -1,5 +1,5 @@
 import "./styles.css";
-import { getWeatherData, processWeatherData } from "./modules/data-functions.js";
+import { getWeatherData, processWeatherData } from './modules/data-functions.js';
 
 const form = document.getElementById('info-form');
 const locationInput = document.getElementById('location');
@@ -23,6 +23,6 @@ form.addEventListener('submit', async (e) => {
         content.append(div);
     } else {
         processedWeatherData = processWeatherData(weatherData);
-        console.log(processedWeatherData);
+        // console.log(processedWeatherData);
     }
 });

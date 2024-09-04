@@ -1,10 +1,12 @@
+import { DOMController } from "./domcontroller";
+
 export async function getWeatherData(units, location) {
   try {
     const response = await fetch(
       `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?unitGroup=${units}&key=DJ3HUDW7YL3L237YRPFEAKJSK&contentType=json`,
     );
     const weatherData = await response.json();
-    console.log(weatherData);
+    // console.log(weatherData);
     return weatherData;
   } catch (e) {
     console.error(e);
@@ -18,12 +20,14 @@ export function processWeatherData(weatherData) {
     }
     const filteredWeatherData = [];
     filteredWeatherData.push(weatherData.days);
+    console.log(filteredWeatherData);
     filteredWeatherData[0].forEach((d) => {
       if (d === filteredWeatherData[0][0]) {
         console.log('today');
       }
       console.log(`${d.datetime}, ${Math.round(d.tempmin)}, ${Math.round(d.tempmax)}, ${d.conditions}`);
     });
-    return filteredWeatherData;
+    console.log(filteredWeatherData);
+    DOMController.updateForecast(filteredWeatherData);
 }
 
