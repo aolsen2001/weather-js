@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 import sun from '../imgs/sun.svg';
+import rain from '../imgs/rain.svg';
 
 export const DOMController  = (function () {
     const weatherToday = document.querySelector('.weather-today');
@@ -66,11 +67,7 @@ export const DOMController  = (function () {
         weatherToday.appendChild(todayHeader);
 
         const weatherImg = document.createElement('img');
-        console.log(todayData.description.toUpperCase());
-        console.log(todayData.description.toUpperCase().includes('clear'));
-        if (todayData.description.toUpperCase().includes('CLEAR')) {
-            weatherImg.src = sun;
-        }
+        weatherImg.src = getImageSource(todayData.conditions.toUpperCase());
         weatherToday.appendChild(weatherImg);
 
         const weatherTodayContainer = document.createElement('div');
@@ -92,6 +89,18 @@ export const DOMController  = (function () {
         const conditionsToday = document.createElement('div');
         conditionsToday.innerHTML = `Outlook: ${todayData.description}`;
         weatherTodayContainer.appendChild(conditionsToday);
+    }
+
+    function getImageSource (conditions) {
+        if (conditions === 'CLEAR') {
+            return sun;
+        }
+        if (conditions.includes('CLOUDY')) {
+            return rain;
+        }
+        if (conditions.includes('RAIN')) {
+            return rain;
+        }
     }
 
     function updateForcastRow (date, low, high, conditions) {
