@@ -4,7 +4,6 @@ import { DOMController } from "./modules/domcontroller.js";
 
 const form = document.getElementById('info-form');
 const locationInput = document.getElementById('location');
-const content = document.querySelector('.main-content-container');
 
 const locationsOnLoad = ['Milwaukee', 'Chicago', 'Dallas', 'Las Vegas', 'San Francisco', 'New York'];
 
@@ -21,9 +20,7 @@ form.addEventListener('submit', async (e) => {
     location = locationInput.value;
     weatherData = await getWeatherData(unitGroup, location);
     if (weatherData === undefined) {
-        const div = document.createElement('div');
-        div.innerHTML = 'Location not found';
-        content.append(div);
+        DOMController.showLocationError();
     } else {
         filteredWeatherData = filterWeatherData(weatherData);
         DOMController.updateForecast(filteredWeatherData);

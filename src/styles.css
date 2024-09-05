@@ -12,7 +12,7 @@
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  padding: 20px;
+  padding: 10px;
   color: white;
   background-color: rgb(2, 21, 38);
 }
@@ -39,10 +39,10 @@
 
 .main-content-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: rgb(2, 21, 38);
+  background-color: rgb(6, 47, 83);
   height: 100vh;
   gap: 100px;
 }
@@ -55,17 +55,22 @@
 
 .weather-today {
   align-items: center;
-  width: 100%;
-  background-color: lightgoldenrodyellow;
+  color: white;
+  width: 40vw;
+}
+
+.weather-today > img {
+  width: 350px;
+  height: 350px;
+  padding: 20px;
 }
 
 .today-content-container {
   align-items: flex-start;
-  background-color: cadetblue;
 }
 
 .forecast-table {
-  width: 50vw;
+  width: 40vw;
 }
 
 caption {
@@ -98,4 +103,8 @@ tbody > tr:nth-child(even) {
 
 .hidden {
   display: none;
+}
+
+#location-error {
+  color: white;
 }

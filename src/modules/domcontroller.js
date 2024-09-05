@@ -1,12 +1,17 @@
 import { format } from 'date-fns';
+import sun from '../imgs/sun.svg';
 
 export const DOMController  = (function () {
     const weatherToday = document.querySelector('.weather-today');
     const forecast = document.querySelector('.forecast-table');
     const forecastCaption = forecast.children[0];
     const forecastBody = forecast.children[2];
+    const errorMessage = document.getElementById('location-error');
     
     function updateForecast(filteredWeatherData) {
+        // hide the error message if visible
+        errorMessage.classList.add('hidden');
+
         const todayData = filteredWeatherData[0][0];
         // update the forecast for the current day
         updateWeatherToday(todayData);
@@ -50,12 +55,23 @@ export const DOMController  = (function () {
     }
 
     function updateWeatherToday(todayData) {
+        // make the current forecast visible if it was hidden
+        weatherToday.classList.remove('hidden');
+
         weatherToday.innerHTML = '';
         
         const todayHeader = document.createElement('h1');
         const today = format(new Date(), 'EEEE M/d');
         todayHeader.innerHTML = today;
         weatherToday.appendChild(todayHeader);
+
+        const weatherImg = document.createElement('img');
+        console.log(todayData.description.toUpperCase());
+        console.log(todayData.description.toUpperCase().includes('clear'));
+        if (todayData.description.toUpperCase().includes('CLEAR')) {
+            weatherImg.src = sun;
+        }
+        weatherToday.appendChild(weatherImg);
 
         const weatherTodayContainer = document.createElement('div');
         weatherTodayContainer.classList.add('today-content-container');
@@ -101,5 +117,11 @@ export const DOMController  = (function () {
         forecastBody.appendChild(forecastRow);
     }
 
-    return { updateForecast };
+    function showLocationError() {
+        errorMessage.classList.remove('hidden');
+        weatherToday.classList.add('hidden');
+        forecast.classList.add('hidden');
+    }
+
+    return { updateForecast, showLocationError };
 })();
