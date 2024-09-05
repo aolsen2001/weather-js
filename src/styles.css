@@ -47,16 +47,25 @@
   gap: 100px;
 }
 
-.weather-today {
+.weather-today, .today-content-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+}
+
+.weather-today {
   align-items: center;
   width: 100%;
   background-color: lightgoldenrodyellow;
 }
 
+.today-content-container {
+  align-items: flex-start;
+  background-color: cadetblue;
+}
+
 .forecast-table {
-  width: 75vw;
+  width: 50vw;
 }
 
 caption {

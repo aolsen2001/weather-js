@@ -1,5 +1,6 @@
 import "./styles.css";
-import { getWeatherData, processWeatherData } from './modules/data-functions.js';
+import { getWeatherData, filterWeatherData } from './modules/data-functions.js';
+import { DOMController } from "./modules/domcontroller.js";
 
 const form = document.getElementById('info-form');
 const locationInput = document.getElementById('location');
@@ -11,7 +12,9 @@ let unitGroup = 'us';
 let location = locationsOnLoad[Math.floor(Math.random() * 6)];
 
 let weatherData = await getWeatherData(unitGroup, location);
-let processedWeatherData = processWeatherData(weatherData);
+let filteredWeatherData = filterWeatherData(weatherData);
+
+DOMController.updateForecast(filteredWeatherData);
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -22,7 +25,7 @@ form.addEventListener('submit', async (e) => {
         div.innerHTML = 'Location not found';
         content.append(div);
     } else {
-        processedWeatherData = processWeatherData(weatherData);
-        // console.log(processedWeatherData);
+        filteredWeatherData = filterWeatherData(weatherData);
+        DOMController.updateForecast(filteredWeatherData);
     }
 });

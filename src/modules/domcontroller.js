@@ -1,48 +1,104 @@
 import { format } from 'date-fns';
 
 export const DOMController  = (function () {
-    const contentContainer = document.querySelector('.main-content-container');
-
     const weatherToday = document.querySelector('.weather-today');
-
     const forecast = document.querySelector('.forecast-table');
     const forecastCaption = forecast.children[0];
     const forecastBody = forecast.children[2];
     
     function updateForecast(filteredWeatherData) {
-        const today = format(new Date(), 'EEEE M/d');
-        console.log(today);
+        const todayData = filteredWeatherData[0][0];
+        // update the forecast for the current day
+        updateWeatherToday(todayData);
+        
+        forecastBody.innerHTML = '';
 
-        let dateVals = dateStringToNums(filteredWeatherData[0][1].datetime);
-        const dateStart = format(new Date(dateVals[0], dateVals[1], dateVals[2]), 'EEEE M/d');
+        // make the forecast visible if it was hidden
+        forecast.classList.remove('hidden');
 
-        dateVals = dateStringToNums(filteredWeatherData[0][14].datetime);
-        const dateEnd = format(new Date(dateVals[0], dateVals[1], dateVals[2]), 'EEEE M/d');
+        for (let i = 1; i < 15; ++i) {
+            const currentItem = filteredWeatherData[0][i];
+
+            const date = formatDate(currentItem.datetime);
+            const low = Math.round(currentItem.tempmin);
+            const high = Math.round(currentItem.tempmax);
+            const conditions = currentItem.conditions;
+            updateForcastRow(date, low, high, conditions);
+        }
+
+        const dateStart = formatDate(filteredWeatherData[0][1].datetime);
+        const dateEnd = formatDate(filteredWeatherData[0][14].datetime);
 
         forecastCaption.innerHTML = `Forecast for ${dateStart} to ${dateEnd}`;
-
-        for (let i = 2; i < 14; ++i) {
-            dateVals = dateStringToNums(filteredWeatherData[0][i].datetime);
-            let date = format(new Date(dateVals[0], dateVals[1], dateVals[2]), 'EEEE M/d');
-
-            console.log(date);
-        }
     }
 
-    function dateStringToNums(date) {
-        const dateVals = [];
-
+    /**
+     * Formats the date passed as a string
+     * @param {string} date the date to convert
+     * @returns the date formatted as 'day of the week, month/day of the month'
+     */
+    function formatDate(date) {
         const year = parseInt(date.substring(0, 4));
-        dateVals.push(year);
-
         // get month and subtract 1 since months in 'date-fns' functions are 0-indexed
         const month = parseInt(date.substring(5, 7)) - 1;
-        dateVals.push(month);
 
         const day = parseInt(date.substring(8, 10));
-        dateVals.push(day);
 
-        return dateVals;
+        const formattedDate = format(new Date(year, month, day), 'EEEE M/d')
+
+        return formattedDate;
+    }
+
+    function updateWeatherToday(todayData) {
+        weatherToday.innerHTML = '';
+        
+        const todayHeader = document.createElement('h1');
+        const today = format(new Date(), 'EEEE M/d');
+        todayHeader.innerHTML = today;
+        weatherToday.appendChild(todayHeader);
+
+        const weatherTodayContainer = document.createElement('div');
+        weatherTodayContainer.classList.add('today-content-container');
+        weatherToday.appendChild(weatherTodayContainer);
+
+        const currentTempToday = document.createElement('div');
+        currentTempToday.innerHTML = `Current temperature: ${todayData.temp}`;
+        weatherTodayContainer.appendChild(currentTempToday);
+
+        const lowTempToday = document.createElement('div');
+        lowTempToday.innerHTML = `Low temperature: ${Math.round(todayData.tempmin)}`;
+        weatherTodayContainer.appendChild(lowTempToday);
+
+        const highTempToday = document.createElement('div');
+        highTempToday.innerHTML = `High temperature: ${Math.round(todayData.tempmax)}`;
+        weatherTodayContainer.appendChild(highTempToday);
+
+        const conditionsToday = document.createElement('div');
+        conditionsToday.innerHTML = `Outlook: ${todayData.description}`;
+        weatherTodayContainer.appendChild(conditionsToday);
+    }
+
+    function updateForcastRow (date, low, high, conditions) {
+        const forecastRow = document.createElement('tr');
+
+        const rowDate = document.createElement('th');
+        rowDate.setAttribute('scope', 'row');
+        rowDate.innerHTML = date;
+        forecastRow.appendChild(rowDate);
+
+        const rowLow = document.createElement('td');
+        rowLow.innerHTML = low;
+        forecastRow.appendChild(rowLow);
+
+        const rowHigh = document.createElement('td');
+        rowHigh.innerHTML = high;
+        forecastRow.appendChild(rowHigh);
+
+        const rowConditions = document.createElement('td');
+        rowConditions.innerHTML = conditions;
+        forecastRow.appendChild(rowConditions);
+
+        forecastBody.appendChild(forecastRow);
     }
 
     return { updateForecast };
