@@ -13,7 +13,7 @@ let location = locationsOnLoad[Math.floor(Math.random() * 6)];
 let weatherData = await getWeatherData(unitGroup, location);
 let filteredWeatherData = filterWeatherData(weatherData);
 
-DOMController.updateForecast(filteredWeatherData);
+DOMController.updateForecast(filteredWeatherData, location);
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -23,6 +23,6 @@ form.addEventListener('submit', async (e) => {
         DOMController.showLocationError();
     } else {
         filteredWeatherData = filterWeatherData(weatherData);
-        DOMController.updateForecast(filteredWeatherData);
+        DOMController.updateForecast(filteredWeatherData, location);
     }
 });

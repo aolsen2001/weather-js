@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import sun from '../imgs/sun.svg';
 import rain from '../imgs/rain.svg';
+import cloud from '../imgs/cloud.svg';
 
 export const DOMController  = (function () {
     const weatherToday = document.querySelector('.weather-today');
@@ -9,13 +10,13 @@ export const DOMController  = (function () {
     const forecastBody = forecast.children[2];
     const errorMessage = document.getElementById('location-error');
     
-    function updateForecast(filteredWeatherData) {
+    function updateForecast(filteredWeatherData, location) {
         // hide the error message if visible
         errorMessage.classList.add('hidden');
 
         const todayData = filteredWeatherData[0][0];
         // update the forecast for the current day
-        updateWeatherToday(todayData);
+        updateWeatherToday(todayData, location);
         
         forecastBody.innerHTML = '';
 
@@ -55,11 +56,15 @@ export const DOMController  = (function () {
         return formattedDate;
     }
 
-    function updateWeatherToday(todayData) {
+    function updateWeatherToday(todayData, location) {
         // make the current forecast visible if it was hidden
         weatherToday.classList.remove('hidden');
 
         weatherToday.innerHTML = '';
+
+        const locationHeader = document.createElement('h1');
+        locationHeader.innerHTML = location;
+        weatherToday.appendChild(locationHeader);
         
         const todayHeader = document.createElement('h1');
         const today = format(new Date(), 'EEEE M/d');
@@ -95,11 +100,11 @@ export const DOMController  = (function () {
         if (conditions === 'CLEAR') {
             return sun;
         }
-        if (conditions.includes('CLOUDY')) {
-            return rain;
-        }
         if (conditions.includes('RAIN')) {
             return rain;
+        }
+        if (conditions.includes('CLOUDY')) {
+            return cloud;
         }
     }
 
