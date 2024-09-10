@@ -12,6 +12,7 @@ let location = locationsOnLoad[Math.floor(Math.random() * 6)];
 
 let weatherData = await getWeatherData(unitGroup, location);
 let filteredWeatherData = filterWeatherData(weatherData);
+console.log(location);
 
 DOMController.updateForecast(filteredWeatherData, location);
 
